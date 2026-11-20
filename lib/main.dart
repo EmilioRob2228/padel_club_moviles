@@ -1,27 +1,38 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:padel_club/components/theme_app.dart';
 import 'package:padel_club/firebase_options.dart';
+import 'package:padel_club/providers/login_provider.dart';
 import 'package:padel_club/providers/theme_provider.dart';
 import 'package:padel_club/screens/dashboard_screen.dart';
+import 'package:padel_club/screens/login_screen.dart';
+import 'package:padel_club/screens/recuperar_screen.dart';
+import 'package:padel_club/screens/sign_in_screen.dart';
+import 'package:padel_club/screens/verificar_correo_screen.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await dotenv.load(fileName: '.env');
-  runApp(const MyApp());
+  final usuario = FirebaseAuth.instance.currentUser;
+  final sesion = usuario != null && usuario.emailVerified;
+  runApp(MyApp(sesion: sesion));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final bool sesion;
+
+  const MyApp({super.key, required this.sesion});
 
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => ThemeProvider()),
+        ChangeNotifierProvider(create: (context) => LoginProvider()),
       ],
       child: Consumer<ThemeProvider>(
         builder: (context, themeProvider, child) {
@@ -31,8 +42,12 @@ class MyApp extends StatelessWidget {
             theme: ThemeApp.claroTheme(),
             darkTheme: ThemeApp.oscuroTheme(),
             themeMode: themeProvider.modo,
-            home: const DashboardScreen(),
+            initialRoute: sesion ? '/dash' : '/login',
             routes: {
+              '/login': (context) => const LoginScreen(),
+              '/signIn': (context) => const SignInScreen(),
+              '/verificar': (context) => const VerificarCorreoScreen(),
+              '/recuperar': (context) => const RecuperarScreen(),
               '/dash': (context) => const DashboardScreen(),
             },
           );
