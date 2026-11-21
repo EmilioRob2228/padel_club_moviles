@@ -18,7 +18,8 @@ void main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await dotenv.load(fileName: '.env');
   final usuario = FirebaseAuth.instance.currentUser;
-  final sesion = usuario != null && usuario.emailVerified;
+  final sesion = usuario != null &&
+      (usuario.emailVerified || usuario.providerData.any((p) => p.providerId != 'password'));
   runApp(MyApp(sesion: sesion));
 }
 

@@ -53,6 +53,34 @@ class _LoginScreenState extends State<LoginScreen> {
       },
     );
 
+    Future<void> social(Future<String?> Function() metodo) async {
+      final resultado = await metodo();
+      if (!context.mounted) return;
+      if (resultado == null) {
+        Navigator.pushReplacementNamed(context, '/dash');
+      } else if (resultado != 'cancelado') {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(resultado)));
+      }
+    }
+
+    final btnGoogle = SizedBox(
+      height: 48,
+      child: OutlinedButton.icon(
+        onPressed: loginProvider.cargando ? null : () => social(loginProvider.m_google),
+        icon: const Icon(Icons.g_mobiledata, size: 28),
+        label: const Text('Continuar con Google'),
+      ),
+    );
+
+    final btnGithub = SizedBox(
+      height: 48,
+      child: OutlinedButton.icon(
+        onPressed: loginProvider.cargando ? null : () => social(loginProvider.m_github),
+        icon: const Icon(Icons.code),
+        label: const Text('Continuar con GitHub'),
+      ),
+    );
+
     return Scaffold(
       body: SafeArea(
         child: Center(
@@ -77,6 +105,18 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   const SizedBox(height: 8),
                   btnLogin,
+                  const SizedBox(height: 24),
+                  const Row(
+                    children: [
+                      Expanded(child: Divider()),
+                      Padding(padding: EdgeInsets.symmetric(horizontal: 12), child: Text('o')),
+                      Expanded(child: Divider()),
+                    ],
+                  ),
+                  const SizedBox(height: 24),
+                  btnGoogle,
+                  const SizedBox(height: 12),
+                  btnGithub,
                   const SizedBox(height: 16),
                   TextButton(
                     onPressed: () => Navigator.pushNamed(context, '/signIn'),
