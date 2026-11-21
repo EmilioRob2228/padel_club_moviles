@@ -6,8 +6,10 @@ import 'package:padel_club/components/theme_app.dart';
 import 'package:padel_club/firebase_options.dart';
 import 'package:padel_club/providers/login_provider.dart';
 import 'package:padel_club/providers/theme_provider.dart';
+import 'package:padel_club/providers/usuario_provider.dart';
 import 'package:padel_club/screens/dashboard_screen.dart';
 import 'package:padel_club/screens/login_screen.dart';
+import 'package:padel_club/screens/perfil_screen.dart';
 import 'package:padel_club/screens/recuperar_screen.dart';
 import 'package:padel_club/screens/sign_in_screen.dart';
 import 'package:padel_club/screens/verificar_correo_screen.dart';
@@ -34,6 +36,7 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (context) => ThemeProvider()),
         ChangeNotifierProvider(create: (context) => LoginProvider()),
+        ChangeNotifierProvider(create: (context) => UsuarioProvider()),
       ],
       child: Consumer<ThemeProvider>(
         builder: (context, themeProvider, child) {
@@ -50,6 +53,7 @@ class MyApp extends StatelessWidget {
               '/verificar': (context) => const VerificarCorreoScreen(),
               '/recuperar': (context) => const RecuperarScreen(),
               '/dash': (context) => const DashboardScreen(),
+              '/perfil': (context) => const PerfilScreen(),
             },
           );
         },

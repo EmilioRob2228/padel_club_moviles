@@ -78,5 +78,9 @@
 			</array>
 		</dict>
 	</array>
+	<key>NSCameraUsageDescription</key>
+	<string>Se usa para tomar tu foto de perfil.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Se usa para elegir tu foto de perfil.</string>
 </dict>
 </plist>
