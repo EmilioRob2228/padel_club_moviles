@@ -1,25 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:padel_club/components/boton_carga.dart';
 import 'package:padel_club/models/plan_model.dart';
 import 'package:padel_club/providers/pago_provider.dart';
 import 'package:provider/provider.dart';
 
-class PagoScreen extends StatefulWidget {
+class PagoScreen extends StatelessWidget {
   const PagoScreen({super.key});
-
-  @override
-  State<PagoScreen> createState() => _PagoScreenState();
-}
-
-class _PagoScreenState extends State<PagoScreen> {
-  final conTarjeta = CardFormEditController();
-
-  @override
-  void dispose() {
-    conTarjeta.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,12 +33,6 @@ class _PagoScreenState extends State<PagoScreen> {
       texto: 'Pagar \$${plan.precio.toStringAsFixed(0)} MXN',
       cargando: pagoProvider.cargando,
       onPressed: () async {
-        if (!conTarjeta.details.complete) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Completa los datos de la tarjeta')),
-          );
-          return;
-        }
         final error = await pagoProvider.m_pagar(plan);
         if (!context.mounted) return;
         if (error == null) {
@@ -88,29 +68,13 @@ class _PagoScreenState extends State<PagoScreen> {
                   ),
                 ),
                 const SizedBox(height: 24),
-                Text('Tarjeta', style: TextStyle(color: colores.onSurfaceVariant)),
-                const SizedBox(height: 8),
-                CardFormField(
-                  controller: conTarjeta,
-                  enablePostalCode: false,
-                  countryCode: 'MX',
-                  style: CardFormStyle(
-                    backgroundColor: colores.surfaceContainerHighest,
-                    textColor: colores.onSurface,
-                    placeholderColor: colores.onSurfaceVariant,
-                    borderColor: Colors.transparent,
-                    borderRadius: 18,
-                    cursorColor: colores.primary,
-                  ),
-                ),
-                const SizedBox(height: 8),
                 Row(
                   children: [
                     Icon(Icons.fingerprint, size: 18, color: colores.onSurfaceVariant),
                     const SizedBox(width: 6),
                     Expanded(
                       child: Text(
-                        'Se pedirá tu huella para confirmar el pago.',
+                        'Confirmarás con tu huella y después capturarás tu tarjeta en la pantalla segura de Stripe.',
                         style: TextStyle(color: colores.onSurfaceVariant, fontSize: 13),
                       ),
                     ),

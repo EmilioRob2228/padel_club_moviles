@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_functions/cloud_functions.dart';
-import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 
 class Pagos {
@@ -19,10 +19,22 @@ class Pagos {
 
   Future<String?> m_confirmar(String clientSecret) async {
     try {
-      await Stripe.instance.confirmPayment(
-        paymentIntentClientSecret: clientSecret,
-        data: const PaymentMethodParams.card(paymentMethodData: PaymentMethodData()),
+      await Stripe.instance.initPaymentSheet(
+        paymentSheetParameters: SetupPaymentSheetParameters(
+          paymentIntentClientSecret: clientSecret,
+          merchantDisplayName: 'Club de Pádel',
+          appearance: const PaymentSheetAppearance(
+            colors: PaymentSheetAppearanceColors(primary: Color(0xFFDFF94B)),
+            primaryButton: PaymentSheetPrimaryButtonAppearance(
+              colors: PaymentSheetPrimaryButtonTheme(
+                light: PaymentSheetPrimaryButtonThemeColors(background: Color(0xFFDFF94B), text: Color(0xFF0B0B0C)),
+                dark: PaymentSheetPrimaryButtonThemeColors(background: Color(0xFFDFF94B), text: Color(0xFF0B0B0C)),
+              ),
+            ),
+          ),
+        ),
       );
+      await Stripe.instance.presentPaymentSheet();
       return null;
     } on StripeException catch (e) {
       if (e.error.code == FailureCode.Canceled) return 'cancelado';

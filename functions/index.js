@@ -49,31 +49,31 @@ exports.cargarDatosPrueba = onRequest(async (req, res) => {
     await db.collection("planes").doc(id).set(datos);
   }
 
-  const fotoCentro = await urlFoto("sedes/centro.jpg");
-  const fotoNorte = await urlFoto("sedes/norte.jpg");
+  const fotoTorres = await urlFoto("sedes/torreslanda.jpg");
+  const fotoCampestre = await urlFoto("sedes/campestre.jpg");
 
   const sedes = [
     {
-      id: "centro",
-      nombre: "Sede Centro",
-      direccion: "Av. Benito Juárez 120, Zona Centro, Celaya, Gto.",
-      lat: 20.5223,
-      lng: -100.8139,
-      fotoUrl: fotoCentro,
+      id: "torreslanda",
+      nombre: "Sede Torres Landa",
+      direccion: "Blvd. Juan José Torres Landa 1200, Celaya, Gto.",
+      lat: 20.5285,
+      lng: -100.7955,
+      fotoUrl: fotoTorres,
       horarioApertura: 7,
       horarioCierre: 23,
-      topic: "sede_centro",
+      topic: "sede_torreslanda",
     },
     {
-      id: "norte",
-      nombre: "Sede Norte",
-      direccion: "Av. Tecnológico 1500, Celaya, Gto.",
-      lat: 20.5410,
-      lng: -100.8170,
-      fotoUrl: fotoNorte,
+      id: "campestre",
+      nombre: "Sede Campestre",
+      direccion: "Blvd. Adolfo López Mateos 2300, Col. Campestre, Celaya, Gto.",
+      lat: 20.5352,
+      lng: -100.8296,
+      fotoUrl: fotoCampestre,
       horarioApertura: 7,
       horarioCierre: 22,
-      topic: "sede_norte",
+      topic: "sede_campestre",
     },
   ];
   for (const s of sedes) {
@@ -82,10 +82,10 @@ exports.cargarDatosPrueba = onRequest(async (req, res) => {
   }
 
   const canchas = [
-    { id: "centro_1", sedeId: "centro", nombre: "Cancha 1", tipo: "Techada", tarifaHora: 350, ruta: "canchas/centro_1.jpg", respaldo: fotoCentro },
-    { id: "centro_2", sedeId: "centro", nombre: "Cancha 2", tipo: "Descubierta", tarifaHora: 300, ruta: "canchas/centro_2.jpg", respaldo: fotoCentro },
-    { id: "norte_1", sedeId: "norte", nombre: "Cancha 1", tipo: "Techada", tarifaHora: 380, ruta: "canchas/norte_1.jpg", respaldo: fotoNorte },
-    { id: "norte_2", sedeId: "norte", nombre: "Cancha 2", tipo: "Descubierta", tarifaHora: 320, ruta: "canchas/norte_2.jpg", respaldo: fotoNorte },
+    { id: "torreslanda_1", sedeId: "torreslanda", nombre: "Cancha 1", tipo: "Techada", tarifaHora: 350, ruta: "canchas/torreslanda_1.jpg", respaldo: fotoTorres },
+    { id: "torreslanda_2", sedeId: "torreslanda", nombre: "Cancha 2", tipo: "Descubierta", tarifaHora: 300, ruta: "canchas/torreslanda_2.jpg", respaldo: fotoTorres },
+    { id: "campestre_1", sedeId: "campestre", nombre: "Cancha 1", tipo: "Techada", tarifaHora: 380, ruta: "canchas/campestre_1.jpg", respaldo: fotoCampestre },
+    { id: "campestre_2", sedeId: "campestre", nombre: "Cancha 2", tipo: "Descubierta", tarifaHora: 320, ruta: "canchas/campestre_2.jpg", respaldo: fotoCampestre },
   ];
   for (const c of canchas) {
     const foto = (await urlFoto(c.ruta)) || c.respaldo;

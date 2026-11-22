@@ -45,6 +45,9 @@ dependencies:
   firebase_storage: ^14.1.0
   image_picker: ^1.2.4
   cached_network_image: ^4.0.7
+  flutter_stripe: ^15.0.0
+  cloud_functions: ^7.1.0
+  local_auth: ^3.0.2
 
 dev_dependencies:
   flutter_test:

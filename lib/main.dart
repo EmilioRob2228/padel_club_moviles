@@ -53,6 +53,7 @@ class MyApp extends StatelessWidget {
         builder: (context, themeProvider, child) {
           return MaterialApp(
             debugShowCheckedModeBanner: false,
+            scrollBehavior: const MaterialScrollBehavior().copyWith(overscroll: false),
             title: 'Club de Pádel',
             theme: ThemeApp.claroTheme(),
             darkTheme: ThemeApp.oscuroTheme(),
