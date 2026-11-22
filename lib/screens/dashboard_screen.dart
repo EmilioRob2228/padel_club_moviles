@@ -21,8 +21,15 @@ class DashboardScreen extends StatelessWidget {
             Consumer<UsuarioProvider>(
               builder: (context, usuarioProvider, child) {
                 return UserAccountsDrawerHeader(
-                  accountName: Text(usuarioProvider.nombre),
-                  accountEmail: Text(usuarioProvider.correo),
+                  decoration: BoxDecoration(color: Theme.of(context).colorScheme.surfaceContainer),
+                  accountName: Text(
+                    usuarioProvider.nombre,
+                    style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontWeight: FontWeight.w700),
+                  ),
+                  accountEmail: Text(
+                    usuarioProvider.correo,
+                    style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant),
+                  ),
                   currentAccountPicture: AvatarUsuario(
                     fotoUrl: usuarioProvider.fotoUrl,
                     nombre: usuarioProvider.nombre,
@@ -38,6 +45,16 @@ class DashboardScreen extends StatelessWidget {
               onTap: () {
                 Navigator.pop(context);
                 Navigator.pushNamed(context, '/perfil');
+              },
+            ),
+            ListTile(
+              title: const Text('Membresías'),
+              subtitle: const Text('Planes y pago'),
+              leading: const Icon(Icons.workspace_premium_outlined),
+              trailing: const Icon(Icons.chevron_right),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.pushNamed(context, '/membresias');
               },
             ),
             SwitchListTile(

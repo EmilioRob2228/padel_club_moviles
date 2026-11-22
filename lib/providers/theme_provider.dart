@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ThemeProvider extends ChangeNotifier {
-  bool oscuro = false;
+  bool oscuro = true;
 
   ThemeProvider() {
     m_cargar();
@@ -12,7 +12,7 @@ class ThemeProvider extends ChangeNotifier {
 
   Future<void> m_cargar() async {
     final prefs = await SharedPreferences.getInstance();
-    oscuro = prefs.getBool('oscuro') ?? false;
+    oscuro = prefs.getBool('oscuro') ?? true;
     notifyListeners();
   }
 

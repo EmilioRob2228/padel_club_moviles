@@ -82,5 +82,7 @@
 	<string>Se usa para tomar tu foto de perfil.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Se usa para elegir tu foto de perfil.</string>
+	<key>NSFaceIDUsageDescription</key>
+	<string>Se usa para confirmar pagos y reservas.</string>
 </dict>
 </plist>
