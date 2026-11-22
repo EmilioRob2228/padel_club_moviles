@@ -7,15 +7,19 @@ import 'package:padel_club/components/theme_app.dart';
 import 'package:padel_club/firebase_options.dart';
 import 'package:padel_club/providers/login_provider.dart';
 import 'package:padel_club/providers/pago_provider.dart';
+import 'package:padel_club/providers/reserva_provider.dart';
 import 'package:padel_club/providers/theme_provider.dart';
 import 'package:padel_club/providers/usuario_provider.dart';
+import 'package:padel_club/screens/cancha_detalle_screen.dart';
 import 'package:padel_club/screens/dashboard_screen.dart';
 import 'package:padel_club/screens/login_screen.dart';
 import 'package:padel_club/screens/membresias_screen.dart';
+import 'package:padel_club/screens/mis_reservas_screen.dart';
 import 'package:padel_club/screens/pago_exitoso_screen.dart';
 import 'package:padel_club/screens/pago_screen.dart';
 import 'package:padel_club/screens/perfil_screen.dart';
 import 'package:padel_club/screens/recuperar_screen.dart';
+import 'package:padel_club/screens/sede_screen.dart';
 import 'package:padel_club/screens/sign_in_screen.dart';
 import 'package:padel_club/screens/verificar_correo_screen.dart';
 import 'package:provider/provider.dart';
@@ -48,6 +52,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => LoginProvider()),
         ChangeNotifierProvider(create: (context) => UsuarioProvider()),
         ChangeNotifierProvider(create: (context) => PagoProvider()),
+        ChangeNotifierProvider(create: (context) => ReservaProvider()),
       ],
       child: Consumer<ThemeProvider>(
         builder: (context, themeProvider, child) {
@@ -69,6 +74,9 @@ class MyApp extends StatelessWidget {
               '/membresias': (context) => const MembresiasScreen(),
               '/pago': (context) => const PagoScreen(),
               '/pagoExitoso': (context) => const PagoExitosoScreen(),
+              '/sede': (context) => const SedeScreen(),
+              '/cancha': (context) => const CanchaDetalleScreen(),
+              '/misReservas': (context) => const MisReservasScreen(),
             },
           );
         },

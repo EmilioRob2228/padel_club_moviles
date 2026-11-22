@@ -82,21 +82,22 @@ exports.cargarDatosPrueba = onRequest(async (req, res) => {
   }
 
   const canchas = [
-    { id: "torreslanda_1", sedeId: "torreslanda", nombre: "Cancha 1", tipo: "Techada", tarifaHora: 350, ruta: "canchas/torreslanda_1.jpg", respaldo: fotoTorres },
-    { id: "torreslanda_2", sedeId: "torreslanda", nombre: "Cancha 2", tipo: "Descubierta", tarifaHora: 300, ruta: "canchas/torreslanda_2.jpg", respaldo: fotoTorres },
-    { id: "campestre_1", sedeId: "campestre", nombre: "Cancha 1", tipo: "Techada", tarifaHora: 380, ruta: "canchas/campestre_1.jpg", respaldo: fotoCampestre },
-    { id: "campestre_2", sedeId: "campestre", nombre: "Cancha 2", tipo: "Descubierta", tarifaHora: 320, ruta: "canchas/campestre_2.jpg", respaldo: fotoCampestre },
+    { id: "torreslanda_1", sedeId: "torreslanda", nombre: "Cancha 1", tipo: "Descubierta", tarifaHora: 300 },
+    { id: "torreslanda_2", sedeId: "torreslanda", nombre: "Cancha 2", tipo: "Descubierta", tarifaHora: 300 },
+    { id: "torreslanda_3", sedeId: "torreslanda", nombre: "Cancha 3", tipo: "Techada", tarifaHora: 380 },
+    { id: "torreslanda_4", sedeId: "torreslanda", nombre: "Cancha 4", tipo: "Techada", tarifaHora: 380 },
+    { id: "torreslanda_5", sedeId: "torreslanda", nombre: "Cancha 5", tipo: "Techada", tarifaHora: 380 },
+    { id: "campestre_1", sedeId: "campestre", nombre: "Cancha 1", tipo: "Descubierta", tarifaHora: 320 },
+    { id: "campestre_2", sedeId: "campestre", nombre: "Cancha 2", tipo: "Descubierta", tarifaHora: 320 },
+    { id: "campestre_3", sedeId: "campestre", nombre: "Cancha 3", tipo: "Descubierta", tarifaHora: 320 },
+    { id: "campestre_4", sedeId: "campestre", nombre: "Cancha 4", tipo: "Descubierta", tarifaHora: 320 },
+    { id: "campestre_5", sedeId: "campestre", nombre: "Cancha 5", tipo: "Techada", tarifaHora: 400 },
+    { id: "campestre_6", sedeId: "campestre", nombre: "Cancha 6", tipo: "Techada", tarifaHora: 400 },
   ];
   for (const c of canchas) {
-    const foto = (await urlFoto(c.ruta)) || c.respaldo;
-    await db.collection("canchas").doc(c.id).set({
-      sedeId: c.sedeId,
-      nombre: c.nombre,
-      tipo: c.tipo,
-      tarifaHora: c.tarifaHora,
-      fotoUrl: foto,
-    });
+    const { id, ...datos } = c;
+    await db.collection("canchas").doc(id).set(datos);
   }
 
-  res.send("Datos de prueba cargados: 3 planes, 2 sedes y 4 canchas.");
+  res.send("Datos de prueba cargados: 3 planes, 2 sedes y 11 canchas.");
 });
