@@ -7,7 +7,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>Padel Club</string>
+	<string>House of Padel</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -84,5 +84,7 @@
 	<string>Se usa para elegir tu foto de perfil.</string>
 	<key>NSFaceIDUsageDescription</key>
 	<string>Se usa para confirmar pagos y reservas.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Se usa para mostrar tu ubicación en el mapa de sedes.</string>
 </dict>
 </plist>

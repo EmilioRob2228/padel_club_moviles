@@ -4,15 +4,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:padel_club/components/theme_app.dart';
+import 'package:padel_club/config/notificaciones.dart';
 import 'package:padel_club/firebase_options.dart';
 import 'package:padel_club/providers/login_provider.dart';
 import 'package:padel_club/providers/pago_provider.dart';
 import 'package:padel_club/providers/reserva_provider.dart';
 import 'package:padel_club/providers/theme_provider.dart';
+import 'package:padel_club/providers/topics_provider.dart';
 import 'package:padel_club/providers/usuario_provider.dart';
+import 'package:padel_club/screens/avisos_screen.dart';
 import 'package:padel_club/screens/cancha_detalle_screen.dart';
 import 'package:padel_club/screens/dashboard_screen.dart';
 import 'package:padel_club/screens/login_screen.dart';
+import 'package:padel_club/screens/map_screen.dart';
 import 'package:padel_club/screens/membresias_screen.dart';
 import 'package:padel_club/screens/mis_reservas_screen.dart';
 import 'package:padel_club/screens/pago_exitoso_screen.dart';
@@ -33,6 +37,7 @@ void main() async {
     Stripe.publishableKey = llaveStripe;
     await Stripe.instance.applySettings();
   }
+  await Notificaciones.init();
   final usuario = FirebaseAuth.instance.currentUser;
   final sesion = usuario != null &&
       (usuario.emailVerified || usuario.providerData.any((p) => p.providerId != 'password'));
@@ -53,13 +58,16 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => UsuarioProvider()),
         ChangeNotifierProvider(create: (context) => PagoProvider()),
         ChangeNotifierProvider(create: (context) => ReservaProvider()),
+        ChangeNotifierProvider(create: (context) => TopicsProvider()),
       ],
       child: Consumer<ThemeProvider>(
         builder: (context, themeProvider, child) {
           return MaterialApp(
             debugShowCheckedModeBanner: false,
+            navigatorKey: Notificaciones.navigatorKey,
+            scaffoldMessengerKey: Notificaciones.scaffoldMessengerKey,
             scrollBehavior: const MaterialScrollBehavior().copyWith(overscroll: false),
-            title: 'Club de Pádel',
+            title: 'House of Padel',
             theme: ThemeApp.claroTheme(),
             darkTheme: ThemeApp.oscuroTheme(),
             themeMode: themeProvider.modo,
@@ -77,6 +85,8 @@ class MyApp extends StatelessWidget {
               '/sede': (context) => const SedeScreen(),
               '/cancha': (context) => const CanchaDetalleScreen(),
               '/misReservas': (context) => const MisReservasScreen(),
+              '/avisos': (context) => const AvisosScreen(),
+              '/mapa': (context) => const MapScreen(),
             },
           );
         },

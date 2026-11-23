@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:padel_club/components/avatar_usuario.dart';
+import 'package:padel_club/providers/topics_provider.dart';
 import 'package:padel_club/providers/usuario_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -84,6 +85,49 @@ class PerfilScreen extends StatelessWidget {
                     leading: const Icon(Icons.verified_user_outlined),
                     title: const Text('Método de acceso'),
                     subtitle: Text(usuarioProvider.proveedor),
+                  ),
+                  const SizedBox(height: 24),
+                  Consumer<TopicsProvider>(
+                    builder: (context, topicsProvider, child) {
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 16),
+                            child: Text('Avisos de sedes', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700)),
+                          ),
+                          ...TopicsProvider.sedes.entries.map(
+                            (sede) => SwitchListTile(
+                              title: Text(sede.value),
+                              value: topicsProvider.topics.contains(sede.key),
+                              onChanged: (activo) => topicsProvider.m_cambiarSede(sede.key, activo),
+                            ),
+                          ),
+                          const SizedBox(height: 16),
+                          const Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 16),
+                            child: Text('Mi nivel', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700)),
+                          ),
+                          const SizedBox(height: 12),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            child: Wrap(
+                              spacing: 8,
+                              children: TopicsProvider.niveles.entries
+                                  .map(
+                                    (nivel) => ChoiceChip(
+                                      label: Text(nivel.value),
+                                      selected: topicsProvider.nivel == nivel.key,
+                                      showCheckmark: false,
+                                      onSelected: (_) => topicsProvider.m_cambiarNivel(nivel.key),
+                                    ),
+                                  )
+                                  .toList(),
+                            ),
+                          ),
+                        ],
+                      );
+                    },
                   ),
                 ],
               ),

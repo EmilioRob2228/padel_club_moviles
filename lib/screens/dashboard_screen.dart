@@ -6,6 +6,7 @@ import 'package:padel_club/config/firestore_sedes.dart';
 import 'package:padel_club/models/sede_model.dart';
 import 'package:padel_club/providers/login_provider.dart';
 import 'package:padel_club/providers/theme_provider.dart';
+import 'package:padel_club/providers/topics_provider.dart';
 import 'package:padel_club/providers/usuario_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -18,7 +19,7 @@ class DashboardScreen extends StatelessWidget {
     final loginProvider = Provider.of<LoginProvider>(context, listen: false);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Club de Pádel')),
+      appBar: AppBar(title: const Text('House of Padel')),
       endDrawer: Drawer(
         child: Column(
           children: [
@@ -47,8 +48,29 @@ class DashboardScreen extends StatelessWidget {
               leading: const Icon(Icons.person_outline),
               trailing: const Icon(Icons.chevron_right),
               onTap: () {
+                Provider.of<TopicsProvider>(context, listen: false).m_cargar();
                 Navigator.pop(context);
                 Navigator.pushNamed(context, '/perfil');
+              },
+            ),
+            ListTile(
+              title: const Text('Mapa de sedes'),
+              subtitle: const Text('Cómo llegar'),
+              leading: const Icon(Icons.map_outlined),
+              trailing: const Icon(Icons.chevron_right),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.pushNamed(context, '/mapa');
+              },
+            ),
+            ListTile(
+              title: const Text('Avisos'),
+              subtitle: const Text('Mensajes del club'),
+              leading: const Icon(Icons.campaign_outlined),
+              trailing: const Icon(Icons.chevron_right),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.pushNamed(context, '/avisos');
               },
             ),
             ListTile(
@@ -129,6 +151,8 @@ class DashboardScreen extends StatelessWidget {
               ),
             ],
           ),
+          const SizedBox(height: 12),
+          _accion(context, Icons.map_outlined, 'Ubica nuestras sedes en el mapa', '/mapa'),
           const SizedBox(height: 28),
           const Text('Nuestras sedes', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700)),
           const SizedBox(height: 12),

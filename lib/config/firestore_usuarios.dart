@@ -18,6 +18,15 @@ class FirestoreUsuarios {
     }
   }
 
+  Future<Map<String, dynamic>> m_get(String uid) async {
+    try {
+      final doc = await usuariosCollection!.doc(uid).get();
+      return (doc.data() as Map<String, dynamic>?) ?? {};
+    } catch (e) {
+      return {};
+    }
+  }
+
   Stream<DocumentSnapshot> m_selectUno(String uid) {
     return usuariosCollection!.doc(uid).snapshots();
   }

@@ -91,7 +91,12 @@ class _LoginScreenState extends State<LoginScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Text('Club de Pádel', style: Theme.of(context).textTheme.headlineMedium, textAlign: TextAlign.center),
+                  Center(
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(32),
+                      child: Image.asset('assets/logo.png', height: 160),
+                    ),
+                  ),
                   const SizedBox(height: 32),
                   txtUser,
                   const SizedBox(height: 12),

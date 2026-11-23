@@ -22,7 +22,7 @@ class Pagos {
       await Stripe.instance.initPaymentSheet(
         paymentSheetParameters: SetupPaymentSheetParameters(
           paymentIntentClientSecret: clientSecret,
-          merchantDisplayName: 'Club de Pádel',
+          merchantDisplayName: 'House of Padel',
           appearance: const PaymentSheetAppearance(
             colors: PaymentSheetAppearanceColors(primary: Color(0xFFDFF94B)),
             primaryButton: PaymentSheetPrimaryButtonAppearance(
