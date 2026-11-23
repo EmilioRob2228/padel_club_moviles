@@ -1,6 +1,8 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
 
 @pragma('vm:entry-point')
 Future<void> notificacionEnSegundoPlano(RemoteMessage mensaje) async {
@@ -14,7 +16,29 @@ class Notificaciones {
   static final navigatorKey = GlobalKey<NavigatorState>();
   static final scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
 
-  static final List<RemoteMessage> avisos = [];
+  static final List<Map<String, dynamic>> avisos = [];
+
+  static Future<void> _cargarAvisos() async {
+    final prefs = await SharedPreferences.getInstance();
+    final guardados = prefs.getStringList('avisos') ?? [];
+    avisos
+      ..clear()
+      ..addAll(guardados.map((a) => Map<String, dynamic>.from(jsonDecode(a))));
+  }
+
+  static Future<void> _guardarAviso(RemoteMessage mensaje) async {
+    final id = mensaje.messageId ?? '${DateTime.now().millisecondsSinceEpoch}';
+    if (avisos.any((a) => a['id'] == id)) return;
+    avisos.insert(0, {
+      'id': id,
+      'titulo': mensaje.notification?.title ?? 'Aviso del club',
+      'cuerpo': mensaje.notification?.body ?? '',
+      'fecha': (mensaje.sentTime ?? DateTime.now()).toIso8601String(),
+    });
+    if (avisos.length > 30) avisos.removeRange(30, avisos.length);
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setStringList('avisos', avisos.map(jsonEncode).toList());
+  }
 
   static const _detalles = NotificationDetails(
     android: AndroidNotificationDetails(
@@ -29,6 +53,7 @@ class Notificaciones {
 
   static Future<void> init() async {
     FirebaseMessaging.onBackgroundMessage(notificacionEnSegundoPlano);
+    await _cargarAvisos();
 
     await plugin.initialize(
       settings: const InitializationSettings(
@@ -54,7 +79,7 @@ class Notificaciones {
     debugPrint('Token FCM: $token');
 
     FirebaseMessaging.onMessage.listen((mensaje) {
-      avisos.insert(0, mensaje);
+      _guardarAviso(mensaje);
       final titulo = mensaje.notification?.title ?? 'Aviso del club';
       final cuerpo = mensaje.notification?.body ?? '';
       plugin.show(
@@ -71,14 +96,14 @@ class Notificaciones {
       );
     });
 
-    FirebaseMessaging.onMessageOpenedApp.listen((mensaje) {
-      avisos.insert(0, mensaje);
+    FirebaseMessaging.onMessageOpenedApp.listen((mensaje) async {
+      await _guardarAviso(mensaje);
       abrirAvisos();
     });
 
     final inicial = await _messaging.getInitialMessage();
     if (inicial != null) {
-      avisos.insert(0, inicial);
+      await _guardarAviso(inicial);
       WidgetsBinding.instance.addPostFrameCallback((_) => abrirAvisos());
     }
   }

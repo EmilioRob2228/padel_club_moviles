@@ -19,7 +19,7 @@ class AvisosScreen extends StatelessWidget {
               separatorBuilder: (context, index) => const SizedBox(height: 12),
               itemBuilder: (context, index) {
                 final aviso = avisos[index];
-                final hora = aviso.sentTime ?? DateTime.now();
+                final hora = DateTime.parse(aviso['fecha']).toLocal();
                 return Card(
                   child: ListTile(
                     contentPadding: const EdgeInsets.all(16),
@@ -28,11 +28,11 @@ class AvisosScreen extends StatelessWidget {
                       child: Icon(Icons.campaign_outlined, color: colores.onPrimary),
                     ),
                     title: Text(
-                      aviso.notification?.title ?? 'Aviso del club',
+                      aviso['titulo'],
                       style: const TextStyle(fontWeight: FontWeight.w700),
                     ),
                     subtitle: Text(
-                      '${aviso.notification?.body ?? ''}\n${hora.hour.toString().padLeft(2, '0')}:${hora.minute.toString().padLeft(2, '0')}',
+                      '${aviso['cuerpo']}\n${hora.day}/${hora.month} ${hora.hour.toString().padLeft(2, '0')}:${hora.minute.toString().padLeft(2, '0')}',
                     ),
                   ),
                 );
