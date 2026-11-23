@@ -17,6 +17,7 @@ import 'package:padel_club/screens/cancha_detalle_screen.dart';
 import 'package:padel_club/screens/dashboard_screen.dart';
 import 'package:padel_club/screens/login_screen.dart';
 import 'package:padel_club/screens/map_screen.dart';
+import 'package:padel_club/screens/onboarding_screen.dart';
 import 'package:padel_club/screens/membresias_screen.dart';
 import 'package:padel_club/screens/mis_reservas_screen.dart';
 import 'package:padel_club/screens/pago_exitoso_screen.dart';
@@ -27,6 +28,7 @@ import 'package:padel_club/screens/sede_screen.dart';
 import 'package:padel_club/screens/sign_in_screen.dart';
 import 'package:padel_club/screens/verificar_correo_screen.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -41,13 +43,16 @@ void main() async {
   final usuario = FirebaseAuth.instance.currentUser;
   final sesion = usuario != null &&
       (usuario.emailVerified || usuario.providerData.any((p) => p.providerId != 'password'));
-  runApp(MyApp(sesion: sesion));
+  final prefs = await SharedPreferences.getInstance();
+  final onboardingVisto = prefs.getBool('onboarding_visto') ?? false;
+  runApp(MyApp(sesion: sesion, onboardingVisto: onboardingVisto));
 }
 
 class MyApp extends StatelessWidget {
   final bool sesion;
+  final bool onboardingVisto;
 
-  const MyApp({super.key, required this.sesion});
+  const MyApp({super.key, required this.sesion, required this.onboardingVisto});
 
   @override
   Widget build(BuildContext context) {
@@ -71,8 +76,9 @@ class MyApp extends StatelessWidget {
             theme: ThemeApp.claroTheme(),
             darkTheme: ThemeApp.oscuroTheme(),
             themeMode: themeProvider.modo,
-            initialRoute: sesion ? '/dash' : '/login',
+            initialRoute: !onboardingVisto ? '/onboarding' : sesion ? '/dash' : '/login',
             routes: {
+              '/onboarding': (context) => OnboardingScreen(siguiente: sesion ? '/dash' : '/login'),
               '/login': (context) => const LoginScreen(),
               '/signIn': (context) => const SignInScreen(),
               '/verificar': (context) => const VerificarCorreoScreen(),
